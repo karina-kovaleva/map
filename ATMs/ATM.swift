@@ -8,7 +8,12 @@
 import Foundation
 import MapKit
 
-struct ATM: Codable {
+struct ATMSection: Hashable {
+    let city: String
+    let atm: [ATM]
+}
+
+struct ATM: Codable, Hashable {
     let id: String
     let area: String
     let cityType: String
