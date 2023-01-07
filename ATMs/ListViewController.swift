@@ -28,6 +28,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
+        collectionView.delegate = self
         network.getATMsList { atms in
             self.atms = atms
             self.createGroupedData(atms)
@@ -62,7 +63,7 @@ class ListViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource<ATMSection, ATM>(
             collectionView: collectionView,
             cellProvider: { collectionView, indexPath, atm -> UICollectionViewCell? in
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "atmCell",
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewCell.reuseId,
                                                               for: indexPath) as? CollectionViewCell
                 cell?.configureCell(model: atm)
                 return cell }
@@ -100,7 +101,7 @@ class ListViewController: UIViewController {
 
         let group = NSCollectionLayoutGroup.horizontal(layoutSize:
                                                         NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                                               heightDimension: .estimated(100)),
+                                                                               heightDimension: .estimated(80)),
                                                        repeatingSubitem: item, count: 3)
 
         let spacing = CGFloat(10)
@@ -119,13 +120,20 @@ class ListViewController: UIViewController {
 
     func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let layoutSectionHeader = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                         heightDimension: .estimated(10))
+                                                         heightDimension: .estimated(20))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: layoutSectionHeader,
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
         return header
+    }
+}
+
+extension ListViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let viewController = MainViewController()
+        viewController.chooseMapViewController()
     }
 }
 

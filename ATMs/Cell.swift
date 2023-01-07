@@ -9,7 +9,7 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
 
-    let identifier = "atmCell"
+    static let reuseId = "atmCell"
 
     private var font = UIFont(name: "Helvetica Neue", size: 14)
 
